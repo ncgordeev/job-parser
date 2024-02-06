@@ -1,4 +1,4 @@
-from utils.user_representative import user_representative
+from utils.user_interaction import user_interaction
 
 if __name__ == "__main__":
-    user_representative()
+    user_interaction()

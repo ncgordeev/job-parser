@@ -1,7 +1,7 @@
 import time
 
 
-def user_representative():
+def user_interaction():
     print("Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n")
     time.sleep(0.2)
 
