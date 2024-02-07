@@ -1,7 +1,7 @@
 import requests
 
 from config import headers, HH_BASE_URL
-from base_class import BaseAPI
+from src.apis.base_class import BaseAPI
 
 
 class HeadHunterAPI(BaseAPI):
@@ -81,7 +81,22 @@ class HeadHunterAPI(BaseAPI):
                 items = raw_json["items"]
                 found_item = raw_json["found"]
                 for item in items:
-                    vacancies_list.append(item)
+                    if item["salary"]:
+                        s_from = item.get("salary").get("from")
+                        s_to = item.get("salary").get("to")
+                    else:
+                        s_from = s_to = 0
+                    data = {
+                        "vacancy_id": item["id"],
+                        "vacancy_name": item["name"],
+                        "salary_from": s_from,
+                        "salary_to": s_to,
+                        "vacancy_url": item["alternate_url"],
+                        "city": item["area"]["name"],
+                        "experience": item["experience"]["name"],
+                        "employer": item["employer"]["name"],
+                    }
+                    vacancies_list.append(data)
                 print(f"Страница {page + 1} из {pages}")
                 if page == pages - 1:
                     print(f"Найдено вакансий - {found_item}")
