@@ -14,7 +14,10 @@ class HeadHunterAPI(BaseAPI):
         self.salary = salary
 
     def get_city_id(self) -> str:
-
+        """
+        Get area id for request
+        :return: area id
+        """
         default_area_id: str = "113"
         params = {
             "text": self.city_name
@@ -34,7 +37,10 @@ class HeadHunterAPI(BaseAPI):
                                      f"Статус ответа - {response.status_code}")
 
     def get_experience_id(self) -> str:
-
+        """
+        Get experience id for requests
+        :return:
+        """
         experience_list = {
             range(0, 2): "noExperience",
             range(1, 4): "between1And3",
@@ -44,13 +50,15 @@ class HeadHunterAPI(BaseAPI):
         default_id = experience_list[range(0, 2)]
 
         for key in experience_list.keys():
-            print(key)
             if self.experience in key:
                 return experience_list[key]
         return default_id
 
     def get_vacancies(self):
-
+        """
+        Make a request for getting a JSON-file with vacations
+        :return:
+        """
         params = {
             "page": 0,
             "per_page": 100,
@@ -62,20 +70,33 @@ class HeadHunterAPI(BaseAPI):
             "salary": self.salary,
         }
 
-        response = requests.get(HH_BASE_URL, headers=headers, params=params)
-        if response.status_code == 200:
-            raw_json = response.json()
-            return raw_json
-        else:
-            raise requests.HTTPError(f"Возникла ошибка подключения."
-                                     f"Статус ответа - {response.status_code}")
+        vacancies_list = []
+
+        while True:
+            response = requests.get(HH_BASE_URL, headers=headers, params=params)
+            if response.status_code == 200:
+                raw_json = response.json()
+                page = raw_json["page"]
+                pages = raw_json["pages"]
+                items = raw_json["items"]
+                found_item = raw_json["found"]
+                for item in items:
+                    vacancies_list.append(item)
+                print(f"Страница {page + 1} из {pages}")
+                if page == pages - 1:
+                    print(f"Найдено вакансий - {found_item}")
+                    return vacancies_list
+                params["page"] += 1
+            else:
+                raise requests.HTTPError(f"Возникла ошибка подключения."
+                                         f"Статус ответа - {response.status_code}")
 
     def __repr__(self):
-        return (f"{__class__.__name__}({self.city_name}, "
+        return (f"{self.__class__.__name__}({self.city_name}, "
                 f"{self.key_word}, {self.experience}, {self.salary})")
 
     def __str__(self):
-        return (f"{__class__.__name__}:\n"
+        return (f"{self.__class__.__name__}:\n"
                 f"Город - {self.city_name},\n"
                 f"Ключевой запрос - {self.key_word}\n"
                 f"Зарплата - {self.salary}"
