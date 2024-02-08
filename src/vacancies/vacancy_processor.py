@@ -1,7 +1,5 @@
 import validators
 
-from src.apis.hh_api import HeadHunterAPI
-
 
 class VacancyProcessor:
 
@@ -14,6 +12,8 @@ class VacancyProcessor:
         self.__city = kwargs["city"]
         self.__experience = kwargs["experience"]
         self.__employer = kwargs["employer"]
+        self.__value = 0
+        self.__platform = kwargs["platform"]
 
     @property
     def vacancy_id(self):
@@ -27,23 +27,19 @@ class VacancyProcessor:
     def salary_from(self):
         return self.__salary_from
 
-    @salary_from.setter
-    def salary_from(self, value):
-        if isinstance(value, int):
-            self.__salary_from = value
-        else:
-            self.__salary_from = 0
-
     @property
     def salary_to(self):
         return self.__salary_to
 
-    @salary_to.setter
-    def salary_to(self, value):
-        if isinstance(value, int):
-            self.__salary_to = value
-        else:
-            self.__salary_to = self.__salary_from
+    @property
+    def value(self) -> int:
+        if self.salary_from and self.salary_to:
+            self.__value = (self.salary_from + self.salary_to) // 2
+        elif self.salary_from and not self.salary_to:
+            self.__value = self.salary_from
+        elif not self.salary_from and self.salary_to:
+            self.__value = self.salary_to
+        return self.__value
 
     @property
     def check_salary(self):
@@ -54,7 +50,7 @@ class VacancyProcessor:
         elif self.__salary_from and self.salary_to:
             return f"Зарплатная вилка от {self.salary_from} до {self.salary_to}"
         else:
-            return f"Зарплата не указана"
+            return "Зарплата не указана"
 
     @property
     def vacancy_url(self):
@@ -79,37 +75,33 @@ class VacancyProcessor:
     def employer(self):
         return self.__employer
 
+    def formatting_vacancy(self):
+        vacancy_fields = {
+            "id": self.vacancy_id,
+            "name": self.vacancy_name,
+            "salary_from": self.salary_from,
+            "salary_to": self.salary_to,
+            "url": self.vacancy_url,
+            "city": self.city,
+            "experience": self.experience,
+            "employer": self.employer,
+            "platform": self.__platform,
+        }
+        return vacancy_fields
+
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}({self.vacancy_id}, "
-            f"{self.vacancy_name}, {self.salary_from}, "
-            f"{self.salary_to}, {self.__city}, "
-            f"{self.__experience}, {self.__employer})"
-        )
+        return (f"{self.__class__.__name__}({self.vacancy_id}, "
+                f"{self.vacancy_name}, {self.salary_from}, "
+                f"{self.salary_to}, {self.__city}, "
+                f"{self.__experience}, {self.__employer})")
 
     def __str__(self) -> str:
-        return (
-            f"Название вакансии - {self.vacancy_name}\n"
-            f"{self.check_salary}\n"
-            f"Требуемый опыт {self.experience}\n"
-            f"Наименование организации - {self.__employer}\n"
-            f"Город расположения - {self.__city}\n"
-            f"Ссылка на вакансию - {self.__vacancy_url}\n"
-        )
+        return (f"Название вакансии - {self.vacancy_name}\n"
+                f"{self.check_salary}\n"
+                f"Требуемый опыт {self.experience}\n"
+                f"Наименование организации - {self.__employer}\n"
+                f"Город расположения - {self.__city}\n"
+                f"Ссылка на вакансию - {self.__vacancy_url}\n")
 
     def __gt__(self, other) -> bool:
-        if self.salary_from:
-            return self.salary_from > other.salary_from
-        elif self.salary_to:
-            return self.salary_to > other.salary_to
-
-
-# it's necessary to transfer data from the user
-hh = HeadHunterAPI("Москва", "python", 1, 150000)
-
-vacancies_list = hh.get_vacancies()
-vacancies_obj = []
-
-for vacancy in vacancies_list:
-    vp = VacancyProcessor(**vacancy)
-    vacancies_obj.append(vp)
+        return self.value > other.value

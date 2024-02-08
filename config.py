@@ -9,3 +9,6 @@ headers = {
 }
 
 HH_BASE_URL = "https://api.hh.ru/vacancies"
+
+ROOT_PATH = os.path.dirname(__file__)
+DATA_FILE = os.path.join(ROOT_PATH, "data", "all_vacancies.json")

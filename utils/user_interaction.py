@@ -1,8 +1,11 @@
 import time
+from src.apis.hh_api import HeadHunterAPI
 
 
 def user_interaction():
-    print("Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n")
+    print(
+        "Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n"
+    )
     time.sleep(0.2)
 
     while True:
@@ -14,9 +17,13 @@ def user_interaction():
         elif user_choice == "0":
             break
         elif user_choice == "1":
-            user_city_query = input("Введите название города, в котором планируете искать работу.\n"
-                                    "Иначе нажмите Enter (поиск будет осуществлен по всем регионам РФ): ")
-            user_keyword_query = input("Введите ключевую фразу для поиска. Например Python-разработчик: ")
+            user_city_query = input(
+                "Введите название города, в котором планируете искать работу.\n"
+                "Иначе нажмите Enter (поиск будет осуществлен по всем регионам РФ): "
+            ).lower().strip()
+            user_keyword_query = input(
+                "Введите ключевую фразу для поиска. Например Python-разработчик: "
+            ).lower().strip()
             user_experience_query = input("Выберите релевантный опыт:\n"
                                           "1 - Менее года\n"
                                           "2 - От года до 3\n"
@@ -26,7 +33,9 @@ def user_interaction():
                 try:
                     user_experience_query = int(user_experience_query)
                 except ValueError:
-                    print("Вы ввели некорректные данные для выбора опыта. Введите число.\n")
+                    print(
+                        "Вы ввели некорректные данные для выбора опыта. Введите число.\n"
+                    )
                     continue
 
             user_salary_query = input("Укажите интересующую зарплату: ")
@@ -34,15 +43,12 @@ def user_interaction():
             try:
                 user_salary_query = int(user_salary_query)
             except ValueError:
-                print("Вы ввели некорректные данные по зарплате. Введите число.\n")
+                print(
+                    "Вы ввели некорректные данные по зарплате. Введите число.\n"
+                )
                 continue
-
+            hh_query = HeadHunterAPI(user_city_query, user_keyword_query,
+                                     user_experience_query, user_salary_query)
+            return hh_query
         else:
             print("Введено неизвестное значение. Попробуйте еще раз.\n")
-
-        user_queries = {
-            # "text": user_city_query,
-            "text": user_keyword_query,
-            "experience": user_experience_query,
-            "salary": user_salary_query,
-        }

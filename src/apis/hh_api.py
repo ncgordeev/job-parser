@@ -36,6 +36,12 @@ class HeadHunterAPI(BaseAPI):
             raise requests.HTTPError(f"Возникла ошибка подключения."
                                      f"Статус ответа - {response.status_code}")
 
+    def get_city_name(self):
+        if self.get_city_id() == "113":
+            return "Россия"
+        else:
+            return self.city_name
+
     def get_experience_id(self) -> str:
         """
         Get experience id for requests
@@ -95,6 +101,7 @@ class HeadHunterAPI(BaseAPI):
                         "city": item["area"]["name"],
                         "experience": item["experience"]["name"],
                         "employer": item["employer"]["name"],
+                        "platform": "headhunter",
                     }
                     vacancies_list.append(data)
                 print(f"Страница {page + 1} из {pages}")
@@ -112,7 +119,7 @@ class HeadHunterAPI(BaseAPI):
 
     def __str__(self):
         return (f"{self.__class__.__name__}:\n"
-                f"Город - {self.city_name},\n"
+                f"Регион поиска - {self.get_city_name()},\n"
                 f"Ключевой запрос - {self.key_word}\n"
                 f"Зарплата - {self.salary}"
                 )
