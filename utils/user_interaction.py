@@ -1,6 +1,7 @@
 import time
 from src.apis.hh_api import HeadHunterAPI
 from src.apis.sj_apy import SuperJobAPI
+from src.vacancies.vacancy_processor import VacancyProcessor
 
 
 def user_interaction():
@@ -16,6 +17,9 @@ def user_interaction():
         elif user_choice == "0":
             break
         elif user_choice == "1":
+            user_choice_platform = input("Выберите платформу для поиска: \n"
+                                         "1 - 'HeadHunter'\n"
+                                         "2 - 'Super Job'\n")
             user_city_query = input(
                 "Введите название города, в котором планируете искать работу.\n"
                 "Иначе нажмите Enter (поиск будет осуществлен по всем регионам РФ): ").lower().strip()
@@ -43,8 +47,27 @@ def user_interaction():
                 print("Вы ввели некорректные данные по зарплате. Введите число.\n")
                 continue
 
-            hh_query = HeadHunterAPI(user_city_query, user_keyword_query,
-                                     user_experience_query, user_salary_query)
-            return hh_query
+            if user_choice_platform == "1":
+                hh_query = HeadHunterAPI(user_city_query, user_keyword_query,
+                                         user_experience_query, user_salary_query)
+                return hh_query
+
+            elif user_choice_platform == "2":
+                sj_query = SuperJobAPI(user_city_query, user_keyword_query,
+                                       user_experience_query, user_salary_query)
+                return sj_query
+
         else:
             print("Введено неизвестное значение. Попробуйте еще раз.\n")
+
+
+def get_sorted_obj(user_data):
+    vacancies_list = user_data.get_vacancies()
+    vacancies_obj = []
+
+    for vacancy in vacancies_list:
+        vp = VacancyProcessor(**vacancy)
+        vacancies_obj.append(vp)
+
+    sorted_obj = sorted(vacancies_obj)
+    return sorted_obj

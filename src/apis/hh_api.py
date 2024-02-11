@@ -62,16 +62,16 @@ class HeadHunterAPI(BaseAPI):
         :return:
         """
         experience_list = {
-            range(0, 2): "noExperience",
-            range(1, 4): "between1And3",
-            range(3, 7): "between3And6",
-            range(6, 30): "moreThan6",
+            1: "noExperience",
+            2: "between1And3",
+            3: "between3And6",
+            4: "moreThan6",
         }
         if self.experience is None:
             del self.params["experience"]
         else:
             for key in experience_list.keys():
-                if self.experience in key:
+                if self.experience == key:
                     self.params["experience"] = experience_list[key]
 
     def get_salary_query(self):
