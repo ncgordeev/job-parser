@@ -77,11 +77,11 @@ class VacancyProcessor:
 
     def formatting_vacancy(self):
         vacancy_fields = {
-            "id": self.vacancy_id,
-            "name": self.vacancy_name,
+            "vacancy_id": self.vacancy_id,
+            "vacancy_name": self.vacancy_name,
             "salary_from": self.salary_from,
             "salary_to": self.salary_to,
-            "url": self.vacancy_url,
+            "vacancy_url": self.vacancy_url,
             "city": self.city,
             "experience": self.experience,
             "employer": self.employer,

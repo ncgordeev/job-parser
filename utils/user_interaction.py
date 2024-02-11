@@ -29,7 +29,7 @@ def user_interaction():
                                           "2 - От года до 3\n"
                                           "3 - От 3 до 6 лет\n"
                                           "4 - Свыше 6 лет: ")
-            if user_experience_query not in ("1", "2", "3", "4"):
+            if user_experience_query not in ("1", "2", "3", "4", ""):
                 try:
                     user_experience_query = int(user_experience_query)
                 except ValueError:
@@ -39,14 +39,14 @@ def user_interaction():
                     continue
 
             user_salary_query = input("Укажите интересующую зарплату: ")
-
-            try:
+            if user_salary_query.isdigit():
                 user_salary_query = int(user_salary_query)
-            except ValueError:
-                print(
-                    "Вы ввели некорректные данные по зарплате. Введите число.\n"
-                )
+            elif user_salary_query in ("", 0):
+                user_salary_query = 1
+            else:
+                print("Вы ввели некорректные данные по зарплате. Введите число.\n")
                 continue
+
             hh_query = HeadHunterAPI(user_city_query, user_keyword_query,
                                      user_experience_query, user_salary_query)
             return hh_query

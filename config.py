@@ -11,4 +11,7 @@ headers = {
 HH_BASE_URL = "https://api.hh.ru/vacancies"
 
 ROOT_PATH = os.path.dirname(__file__)
-DATA_FILE = os.path.join(ROOT_PATH, "data", "all_vacancies.json")
+DATA_FOLDER = os.path.join(ROOT_PATH, "data")
+DATA_FILE = os.path.join(ROOT_PATH, DATA_FOLDER, "all_vacancies.json")
+
+SJ_API_KEY = os.environ.get("SJ_API_KEY")

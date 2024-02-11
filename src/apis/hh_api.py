@@ -90,8 +90,12 @@ class HeadHunterAPI(BaseAPI):
                     if item["salary"]:
                         s_from = item.get("salary").get("from")
                         s_to = item.get("salary").get("to")
+                        valid_currency = item.get("salary").get("currency")
+                        if valid_currency != "RUR":
+                            continue
                     else:
                         s_from = s_to = 0
+
                     data = {
                         "vacancy_id": item["id"],
                         "vacancy_name": item["name"],
@@ -110,7 +114,7 @@ class HeadHunterAPI(BaseAPI):
                     return vacancies_list
                 params["page"] += 1
             else:
-                raise requests.HTTPError(f"Возникла ошибка подключения."
+                raise requests.HTTPError(f"Возникла ошибка подключения. "
                                          f"Статус ответа - {response.status_code}")
 
     def __repr__(self):

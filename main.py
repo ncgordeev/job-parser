@@ -4,9 +4,9 @@ from src.savers.json_saver import JSONSaver
 
 if __name__ == "__main__":
     hh = user_interaction()
-    js = JSONSaver()
     vacancies_list = hh.get_vacancies()
     vacancies_obj = []
+    js = JSONSaver()
 
     for vacancy in vacancies_list:
         vp = VacancyProcessor(**vacancy)
@@ -16,3 +16,8 @@ if __name__ == "__main__":
 
     for obj in sorted_obj:
         js.save_data(obj.formatting_vacancy())
+
+    in_range_vacancies = js.get_vacancy_by_salary("10000-50000")
+
+    for i in in_range_vacancies:
+        print(i)
