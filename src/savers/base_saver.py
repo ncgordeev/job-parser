@@ -8,5 +8,9 @@ class BaseSaver(ABC):
         pass
 
     @abstractmethod
-    def get_data(self, file_path):
+    def get_top_vacancies(self, number):
+        pass
+
+    @staticmethod
+    def get_vacancy_by_title(key_word):
         pass
