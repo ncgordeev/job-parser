@@ -1,11 +1,10 @@
 import time
 from src.apis.hh_api import HeadHunterAPI
+from src.apis.sj_apy import SuperJobAPI
 
 
 def user_interaction():
-    print(
-        "Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n"
-    )
+    print("Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n")
     time.sleep(0.2)
 
     while True:
@@ -19,11 +18,9 @@ def user_interaction():
         elif user_choice == "1":
             user_city_query = input(
                 "Введите название города, в котором планируете искать работу.\n"
-                "Иначе нажмите Enter (поиск будет осуществлен по всем регионам РФ): "
-            ).lower().strip()
+                "Иначе нажмите Enter (поиск будет осуществлен по всем регионам РФ): ").lower().strip()
             user_keyword_query = input(
-                "Введите ключевую фразу для поиска. Например Python-разработчик: "
-            ).lower().strip()
+                "Введите ключевую фразу для поиска. Например Python-разработчик: ").lower().strip()
             user_experience_query = input("Выберите релевантный опыт:\n"
                                           "1 - Менее года\n"
                                           "2 - От года до 3\n"

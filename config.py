@@ -9,6 +9,7 @@ headers = {
 }
 
 HH_BASE_URL = "https://api.hh.ru/vacancies"
+SJ_API_URL = "https://api.superjob.ru/2.0/vacancies/"
 
 ROOT_PATH = os.path.dirname(__file__)
 DATA_FOLDER = os.path.join(ROOT_PATH, "data")

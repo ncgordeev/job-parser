@@ -1,4 +1,5 @@
 import requests
+import time
 
 from config import headers, HH_BASE_URL
 from src.apis.base_class import BaseAPI
@@ -60,7 +61,7 @@ class HeadHunterAPI(BaseAPI):
                 return experience_list[key]
         return default_id
 
-    def get_vacancies(self):
+    def get_vacancies(self) -> list:
         """
         Make a request for getting a JSON-file with vacations
         :return:
@@ -108,6 +109,7 @@ class HeadHunterAPI(BaseAPI):
                         "platform": "headhunter",
                     }
                     vacancies_list.append(data)
+                    time.sleep(0.2)
                 print(f"Страница {page + 1} из {pages}")
                 if page == pages - 1:
                     print(f"Найдено вакансий - {found_item}")
