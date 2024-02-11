@@ -8,6 +8,7 @@ headers = {
     "User-Agent": ua_random,
 }
 
+AREAS_URL = "https://api.hh.ru/areas/"
 HH_BASE_URL = "https://api.hh.ru/vacancies"
 SJ_API_URL = "https://api.superjob.ru/2.0/vacancies/"
 

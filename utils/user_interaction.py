@@ -26,20 +26,19 @@ def user_interaction():
                                           "2 - От года до 3\n"
                                           "3 - От 3 до 6 лет\n"
                                           "4 - Свыше 6 лет: ")
-            if user_experience_query not in ("1", "2", "3", "4", ""):
-                try:
-                    user_experience_query = int(user_experience_query)
-                except ValueError:
-                    print(
-                        "Вы ввели некорректные данные для выбора опыта. Введите число.\n"
-                    )
-                    continue
+            if user_experience_query in ("1", "2", "3", "4",):
+                user_experience_query = int(user_experience_query)
+            elif user_experience_query == "":
+                user_experience_query = None
+            else:
+                print("Вы ввели некорректные данные для выбора опыта. Введите число.\n")
+                continue
 
             user_salary_query = input("Укажите интересующую зарплату: ")
             if user_salary_query.isdigit():
                 user_salary_query = int(user_salary_query)
             elif user_salary_query in ("", 0):
-                user_salary_query = 1
+                user_salary_query = 0
             else:
                 print("Вы ввели некорректные данные по зарплате. Введите число.\n")
                 continue
