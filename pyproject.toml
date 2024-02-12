@@ -7,11 +7,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+fake-useragent = "^1.4.0"
+requests = "^2.31.0"
+validators = "^0.22.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
 pytest-cov = "^4.1.0"
+flake8 = "^7.0.0"
 
 [build-system]
 requires = ["poetry-core"]
