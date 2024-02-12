@@ -12,9 +12,7 @@ from src.savers.json_saver import JSONSaver
 def user_interaction():
     js = JSONSaver()
     index = 1
-    print(
-        "Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n"
-    )
+    print("Добро пожаловать! С помощью данной программы Вы можете осуществить подбор вакансии своей мечты!\n")
     time.sleep(0.2)
 
     while True:
@@ -24,6 +22,7 @@ def user_interaction():
 
         if user_choice_start not in ("0", "1"):
             print("Вы ввели некорректные данные. Попробуйте снова.\n")
+            continue
 
         elif user_choice_start == "0":
             break
@@ -44,6 +43,10 @@ def user_interaction():
                     "Выберите платформу для поиска: \n"
                     "1 - 'HeadHunter'\n"
                     "2 - 'Super Job'\n").strip()
+
+                if user_choice_platform not in ("1", "2",):
+                    print("Неверный выбор. Попробуйте снова")
+                    continue
 
                 user_city_query = input(
                     "Введите название города, в котором планируете искать работу.\n"
@@ -112,10 +115,13 @@ def user_interaction():
 
                     elif user_sort_method == "1":
                         number = input("Введите количество вакансий(по умолчанию - 10) \n").strip()
-                        if not isinstance(number, int):
+
+                        try:
+                            number = int(number) if number else 10
+                        except ValueError:
+                            print("Некорректное значение. Используется значение по умолчанию (10).\n")
                             number = 10
-                        else:
-                            number = int(number)
+
                         top_vacancies = js.get_top_vacancies(number)
 
                         for vacancy in top_vacancies:
@@ -126,15 +132,17 @@ def user_interaction():
                         in_range_number = input(
                             "Введите диапазон зарплат.\n"
                             "Например: 50000-100000 ").strip()
-                        value_from, value_to = list(
-                            map(int, in_range_number.split("-")))
+
+                        try:
+                            value_from, value_to = list(map(int, in_range_number.split("-")))
+                        except ValueError:
+                            print("Некорректный формат диапазона. Попробуйте еще раз.\n")
+                            continue
 
                         in_range_vacancies = js.get_vacancy_by_salary(value_from, value_to)
 
                         if not in_range_vacancies:
-                            print(
-                                "\nПодходящих вакансий не найдено. Попробуйте изменить запрос.\n"
-                            )
+                            print("\nПодходящих вакансий не найдено. Попробуйте изменить запрос.\n")
                             exit()
 
                         for range_vacancy in in_range_vacancies:
@@ -147,18 +155,14 @@ def user_interaction():
                         vacancies_by_title = js.get_vacancy_by_title(vacancy_title)
 
                         if not vacancies_by_title:
-                            print(
-                                "\nПодходящих вакансий не найдено. Попробуйте изменить запрос.\n"
-                            )
+                            print("\nПодходящих вакансий не найдено. Попробуйте изменить запрос.\n")
                             exit()
 
                         for vacancy_by_title in vacancies_by_title:
                             print(f"{index} - {vacancy_by_title}")
                             index += 1
                 else:
-                    print(
-                        "Файл не найден. Сначала необходимо сформировать запрос. \n"
-                    )
+                    print("\nФайл не найден. Сначала необходимо сформировать запрос. \n")
                     continue
         else:
             print("Введено неизвестное значение. Попробуйте еще раз.\n")
@@ -167,11 +171,7 @@ def user_interaction():
 
 def get_sorted_obj(user_data):
     vacancies_list = user_data.get_vacancies()
-    vacancies_obj = []
-
-    for vacancy in vacancies_list:
-        vp = VacancyProcessor(**vacancy)
-        vacancies_obj.append(vp)
+    vacancies_obj = [VacancyProcessor(**vacancy) for vacancy in vacancies_list]
 
     sorted_obj = sorted(vacancies_obj, reverse=True)
     return sorted_obj
