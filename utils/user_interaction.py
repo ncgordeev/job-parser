@@ -69,7 +69,7 @@ def user_interaction():
                     print("Вы ввели некорректные данные для выбора опыта. Введите число.\n")
                     continue
 
-                user_salary_query = input("Укажите интересующую зарплату: ").strip()
+                user_salary_query = input("Укажите интересующую зарплату: \n").strip()
 
                 if user_salary_query.isdigit():
                     user_salary_query = int(user_salary_query)
@@ -103,7 +103,7 @@ def user_interaction():
                     user_sort_method = input(
                         "\nВыберите действие: \n"
                         "1 - Вывести топ вакансий по зарплате \n"
-                        "2 - Вывести вакансии, которые входят диапазон зарплат \n"
+                        "2 - Вывести вакансии, которые входят в  диапазон зарплат \n"
                         "3 - Вывести вакансии по названию \n"
                     )
 
@@ -157,7 +157,7 @@ def user_interaction():
                             index += 1
                 else:
                     print(
-                        "Файл не найден. Сначала необходимо сформировать запрос."
+                        "Файл не найден. Сначала необходимо сформировать запрос. \n"
                     )
                     continue
         else:
@@ -173,5 +173,5 @@ def get_sorted_obj(user_data):
         vp = VacancyProcessor(**vacancy)
         vacancies_obj.append(vp)
 
-    sorted_obj = sorted(vacancies_obj)
+    sorted_obj = sorted(vacancies_obj, reverse=True)
     return sorted_obj

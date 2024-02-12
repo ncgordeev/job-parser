@@ -117,9 +117,9 @@ class HeadHunterAPI(BaseAPI):
                     }
                     vacancies_list.append(data)
                     time.sleep(0.1)
-                print(f"Страница {page + 1} из {pages} \n")
+                print(f"Страница {page + 1} из {pages}")
                 if page == pages - 1:
-                    print(f"Найдено вакансий - {found_item} \n")
+                    print(f"\nНайдено вакансий - {found_item} \n")
                     return vacancies_list
                 self.params["page"] += 1
             else:
