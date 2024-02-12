@@ -59,13 +59,13 @@ class JSONSaver(BaseSaver):
         return vacancies_by_title
 
     @staticmethod
-    def get_vacancy_by_salary(value: str):
+    def get_vacancy_by_salary(value_from: int, value_to: int):
         """
         Method get list of vacancies by salary
-        :param value:
+        :param value_from:
+        :param value_to:
         :return:
         """
-        value_from, value_to = list(map(int, value.split("-")))
         in_range_vacancies = []
 
         with open(DATA_FILE, "r", encoding="utf-8") as file:

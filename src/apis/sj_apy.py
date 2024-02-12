@@ -37,7 +37,9 @@ class SuperJobAPI(BaseAPI):
         page_index = 0
 
         while True:
-            response = requests.get(SJ_API_URL, headers=self.headers, params=params)
+            response = requests.get(SJ_API_URL,
+                                    headers=self.headers,
+                                    params=params)
             if response.status_code == 200:
                 raw_json = response.json()
                 items = raw_json["objects"]
@@ -64,16 +66,20 @@ class SuperJobAPI(BaseAPI):
 
                 page_index += 1
                 if len(vacancies_list) != 0:
-                    print(f"Всего вакансий {vacancies_quantity}. Страница {page_index}")
+                    print(
+                        f"Всего вакансий {vacancies_quantity}. Страница {page_index}"
+                    )
                     return vacancies_list
                 else:
                     print(f"Подходящие вакансии не найдены.")
                 if page is False:
                     break
-
+            elif response.status_code == 403:
+                print("Необходимо авторизоваться при помощи API - ключа")
             else:
-                raise requests.HTTPError(f"Возникла ошибка подключения. "
-                                         f"Статус ответа - {response.status_code}")
+                raise requests.HTTPError(
+                    f"Возникла ошибка подключения. "
+                    f"Статус ответа - {response.status_code}")
 
     def __repr__(self):
         return (f"{self.__class__.__name__}({self.city_name}, "
@@ -83,5 +89,4 @@ class SuperJobAPI(BaseAPI):
         return (f"{self.__class__.__name__}:\n"
                 f"Регион поиска - {self.city_name},\n"
                 f"Ключевой запрос - {self.key_word}\n"
-                f"Зарплата - от {self.payment_from}"
-                )
+                f"Зарплата - от {self.payment_from}")
