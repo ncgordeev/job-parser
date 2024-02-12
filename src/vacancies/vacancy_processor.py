@@ -75,6 +75,29 @@ class VacancyProcessor:
     def employer(self):
         return self.__employer
 
+    def has_salary(self):
+        """
+        Check if the vacancy has salary information.
+        :return: True if salary information is available, False otherwise.
+        """
+        return self.__salary_from is not None or self.__salary_to is not None
+
+    def is_salary_in_range(self, value_from, value_to):
+        """
+        Check if the salary of the vacancy is within the specified range.
+        :param value_from: The lower bound of the salary range.
+        :param value_to: The upper bound of the salary range.
+        :return: True if the salary is within the range, False otherwise.
+        """
+        if not self.has_salary():
+            return False
+
+        start_salary = self.__salary_from or self.__salary_to
+        end_salary = self.__salary_to or self.__salary_from
+
+        avg_salary = (start_salary + end_salary) // 2
+        return value_from <= avg_salary <= value_to
+
     def formatting_vacancy(self):
         vacancy_fields = {
             "vacancy_id": self.vacancy_id,
